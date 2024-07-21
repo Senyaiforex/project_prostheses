@@ -1,0 +1,42 @@
+from coreapp.models import *
+
+
+class HandSection(AbstractSection):
+    """
+    Модель для секции сайта в пределах одной страницы
+    """
+
+
+class SectionMixin(models.Model):
+    section = models.ForeignKey(
+            HandSection,
+            on_delete=models.CASCADE,
+            verbose_name='Секция'
+    )
+
+    class Meta:
+        abstract = True
+
+
+class HandTextContent(AbstractTextContent, SectionMixin):
+    """
+    Модель для текстового контента в пределах одной секции
+    """
+
+
+class HandButtonContent(AbstractButtonContent, SectionMixin):
+    """
+    Модель для кнопок в пределах одной секции
+    """
+
+
+class HandHeaderContent(AbstractHeaderContent, SectionMixin):
+    """
+    Модель для заголовков в пределах одной секции
+    """
+
+
+class HandImageContent(AbstractImageContent, SectionMixin):
+    """
+    Модель для картинок в пределах одной секции
+    """
