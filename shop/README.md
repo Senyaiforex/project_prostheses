@@ -1,5 +1,5 @@
 1. Установить python 3.10
-2. Находясь в папке prostheses написать в консоли python -m venv env  - это создаст переменное окружение
+2. Находясь в папке prostheses(../shop) написать в консоли python -m venv env  - это создаст переменное окружение
 3. linux - source env/bin/activate - активировать переменное окружение, deactivate - выключить
    windows - venv/Scripts/activate.bat
 4. перейти в папку shop и запустить команду pip install -r requirements.txt для установки пакетов
