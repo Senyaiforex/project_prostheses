@@ -1,5 +1,4 @@
 env
 .idea
 __pycache__/
-/shope/db.sqlite3
 .env
