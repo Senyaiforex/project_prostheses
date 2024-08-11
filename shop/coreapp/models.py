@@ -18,7 +18,8 @@ class AbstractSection(models.Model):
             ('main', 'Главная'),
             ('about', 'О компании'),
             ('interview', 'Интервью с клиентами'),
-            ('contacts', 'Контакты')
+            ('contacts', 'Контакты'),
+            ('footer', 'Футер')
     ]
     title = models.CharField(verbose_name='Название секции',
                              max_length=100,

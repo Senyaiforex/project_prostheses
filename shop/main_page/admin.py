@@ -60,7 +60,7 @@ class FieldContentInline(nested_admin.NestedTabularInline):
 class ListRelatedContentInline(nested_admin.NestedTabularInline):
     model = ListRelatedContent
     extra = 0
-    fields = ('position', 'description')
+    fields = ('description', 'tag_dev')
     # После разработки убрать position tag из fields
     ordering = ('position',)
     inlines = [FieldContentInline]
@@ -72,7 +72,7 @@ class ListRelatedContentInline(nested_admin.NestedTabularInline):
 class TextContentInline(nested_admin.NestedTabularInline):
     model = TextContent
     extra = 0
-    fields = ('title', 'data')
+    fields = ('title', 'data', 'tag_dev')
     # После разработки убрать position tag из fields
     ordering = ('position',)
 
@@ -121,11 +121,15 @@ class MainPageAdmin(nested_admin.NestedModelAdmin):
                ListRelatedContentInline]
     list_display = ('title',)
     ordering = ('position',)
+    fields = ('title', 'description')
 
     def get_queryset(self, request):
         return super(MainPageAdmin, self).get_queryset(request).filter(
                 page='main'
         )
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 
 @admin.register(AboutPage)
@@ -134,11 +138,15 @@ class AboutPageAdmin(nested_admin.NestedModelAdmin):
                ListRelatedContentInline]
     list_display = ('title',)
     ordering = ('position',)
+    fields = ('title', 'description')
 
     def get_queryset(self, request):
         return super(AboutPageAdmin, self).get_queryset(request).filter(
                 page='about'
         )
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 
 @admin.register(HipPage)
@@ -147,11 +155,15 @@ class HipPageAdmin(nested_admin.NestedModelAdmin):
                ListRelatedContentInline]
     list_display = ('title',)
     ordering = ('position',)
+    fields = ('title', 'description')
 
     def get_queryset(self, request):
         return super(HipPageAdmin, self).get_queryset(request).filter(
                 page='hip'
         )
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 
 @admin.register(LegPage)
@@ -160,11 +172,15 @@ class LegPageAdmin(nested_admin.NestedModelAdmin):
                ListRelatedContentInline]
     list_display = ('title',)
     ordering = ('position',)
+    fields = ('title', 'description')
 
     def get_queryset(self, request):
         return super(LegPageAdmin, self).get_queryset(request).filter(
                 page='leg'
         )
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 
 @admin.register(ArmPage)
@@ -173,11 +189,15 @@ class ArmPageAdmin(nested_admin.NestedModelAdmin):
                ListRelatedContentInline]
     list_display = ('title',)
     ordering = ('position',)
+    fields = ('title', 'description')
 
     def get_queryset(self, request):
         return super(ArmPageAdmin, self).get_queryset(request).filter(
                 page='arm'
         )
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 
 @admin.register(SportPage)
@@ -186,11 +206,15 @@ class SportPageAdmin(nested_admin.NestedModelAdmin):
                ListRelatedContentInline]
     list_display = ('title',)
     ordering = ('position',)
+    fields = ('title', 'description')
 
     def get_queryset(self, request):
         return super(SportPageAdmin, self).get_queryset(request).filter(
                 page='sport'
         )
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 
 @admin.register(SwimPage)
@@ -199,8 +223,46 @@ class SwimPageAdmin(nested_admin.NestedModelAdmin):
                ListRelatedContentInline]
     list_display = ('title',)
     ordering = ('position',)
+    fields = ('title', 'description')
 
     def get_queryset(self, request):
         return super(SwimPageAdmin, self).get_queryset(request).filter(
                 page='swim'
         )
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(ContactPage)
+class ContactPageAdmin(nested_admin.NestedModelAdmin):
+    inlines = [TextContentInline, HeaderContentInline, ImageContentInline, ButtonContentInline, FormInline,
+               ListRelatedContentInline]
+    list_display = ('title',)
+    ordering = ('position',)
+    fields = ('title', 'description')
+
+    def get_queryset(self, request):
+        return super(ContactPageAdmin, self).get_queryset(request).filter(
+                page='contacts'
+        )
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(FooterPage)
+class FooterPageAdmin(nested_admin.NestedModelAdmin):
+    inlines = [TextContentInline, HeaderContentInline, ImageContentInline, ButtonContentInline, FormInline,
+               ListRelatedContentInline]
+    list_display = ('title',)
+    ordering = ('position',)
+    fields = ('title', 'description')
+
+    def get_queryset(self, request):
+        return super(FooterPageAdmin, self).get_queryset(request).filter(
+                page='footer'
+        )
+
+    def has_delete_permission(self, request, obj=None):
+        return False

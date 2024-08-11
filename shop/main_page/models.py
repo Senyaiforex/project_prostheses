@@ -235,3 +235,25 @@ class SwimPage(Section):
         proxy = True
         verbose_name = 'Секция'
         verbose_name_plural = 'Протез купальный'
+
+
+class ContactPage(Section):
+    """
+    Модель страницы контактов
+    """
+
+    class Meta:
+        proxy = True
+        verbose_name = 'Секция'
+        verbose_name_plural = 'Контакты'
+
+
+class FooterPage(Section):
+    """
+    Модель страницы футера
+    """
+
+    class Meta:
+        proxy = True
+        verbose_name = 'Секция'
+        verbose_name_plural = 'Футер'
