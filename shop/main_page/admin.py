@@ -106,7 +106,7 @@ class HeaderContentInline(nested_admin.NestedTabularInline):
 class ButtonContentInline(nested_admin.NestedTabularInline):
     model = ButtonContent
     extra = 0
-    fields = ('title', 'data', 'image', 'image_tag')
+    fields = ('title', 'field_1', 'field_2', 'image', 'image_tag')
     readonly_fields = ('image_tag',)
     # После разработки убрать position tag из fields
     ordering = ('position',)

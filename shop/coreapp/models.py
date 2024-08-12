@@ -88,8 +88,10 @@ class AbstractButtonContent(models.Model):
                              blank=True,
                              null=True,
                              default=' ')
-    data = models.TextField(verbose_name='Текст кнопки', null=True,
-                            blank=True)
+    field_1 = models.CharField(verbose_name='Текст кнопки', null=True, max_length=70,
+                               blank=True)
+    field_2 = models.CharField(verbose_name='Текст кнопки', null=True, default=None, max_length=70,
+                               blank=True)
     position = models.IntegerField(editable=True, blank=True, null=True)
     image = models.ImageField(upload_to='button_images/', verbose_name='Изображение для кнопки',
                               null=True,

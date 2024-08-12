@@ -19,7 +19,7 @@ class ButtonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ButtonContent
-        fields = ['data', 'image']
+        fields = ['field_1', 'field_2', 'image']
 
 
 class HeaderSerializer(serializers.ModelSerializer):
