@@ -60,7 +60,7 @@ class PlaceHolderSerializer(serializers.ModelSerializer):
                          'телефон для связи', 'ваш телефон']
         list_text_email = ['email', 'электронная почта', 'email адрес', 'электронный адрес']
         email_regex = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
-        if obj.text and (phone_regex.match(obj.text) or obj.text.lower() in list_text_tel):
+        if obj.text and (phone_regex.match(obj.text) or obj.text.lower() in list_text_tel or 'телефон' in obj.text.lower()):
             return 'tel'
         elif obj.text and (obj.text.lower() in list_text_email or email_regex.match(obj.text)):
             return 'email'
