@@ -30,7 +30,7 @@ class PlaceHolderInline(nested_admin.NestedTabularInline):
     ordering = ('position',)
 
     def has_delete_permission(self, request, obj=None):
-        return True
+        return False
 
 
 class FormInline(nested_admin.NestedTabularInline):
@@ -41,7 +41,7 @@ class FormInline(nested_admin.NestedTabularInline):
     inlines = [PlaceHolderInline]
 
     def has_delete_permission(self, request, obj=None):
-        return True
+        return False
 
 
 class FieldContentInline(nested_admin.NestedTabularInline):
@@ -54,30 +54,30 @@ class FieldContentInline(nested_admin.NestedTabularInline):
     form = TextContentForm
 
     def has_delete_permission(self, request, obj=None):
-        return True
+        return False
 
 
 class ListRelatedContentInline(nested_admin.NestedTabularInline):
     model = ListRelatedContent
     extra = 0
-    fields = ('description', 'tag_dev')
+    fields = ('description',)
     # После разработки убрать position tag из fields
     ordering = ('position',)
     inlines = [FieldContentInline]
 
     def has_delete_permission(self, request, obj=None):
-        return True
+        return False
 
 
 class TextContentInline(nested_admin.NestedTabularInline):
     model = TextContent
     extra = 0
-    fields = ('title', 'data', 'tag_dev')
+    fields = ('title', 'data')
     # После разработки убрать position tag из fields
     ordering = ('position',)
 
     def has_delete_permission(self, request, obj=None):
-        return True
+        return False
 
 
 class ImageContentInline(nested_admin.NestedTabularInline):
@@ -89,7 +89,7 @@ class ImageContentInline(nested_admin.NestedTabularInline):
     ordering = ('position',)
 
     def has_delete_permission(self, request, obj=None):
-        return True
+        return False
 
 
 class HeaderContentInline(nested_admin.NestedTabularInline):
@@ -100,7 +100,7 @@ class HeaderContentInline(nested_admin.NestedTabularInline):
     ordering = ('position',)
 
     def has_delete_permission(self, request, obj=None):
-        return True
+        return False
 
 
 class ButtonContentInline(nested_admin.NestedTabularInline):
@@ -112,7 +112,7 @@ class ButtonContentInline(nested_admin.NestedTabularInline):
     ordering = ('position',)
 
     def has_delete_permission(self, request, obj=None):
-        return True
+        return False
 
 
 @admin.register(Page)
