@@ -30,7 +30,7 @@ class PlaceHolderInline(nested_admin.NestedTabularInline):
     ordering = ('position',)
 
     def has_delete_permission(self, request, obj=None):
-        return False
+        return True
 
 
 class FormInline(nested_admin.NestedTabularInline):
@@ -41,7 +41,7 @@ class FormInline(nested_admin.NestedTabularInline):
     inlines = [PlaceHolderInline]
 
     def has_delete_permission(self, request, obj=None):
-        return False
+        return True
 
 
 class FieldContentInline(nested_admin.NestedTabularInline):
@@ -54,7 +54,7 @@ class FieldContentInline(nested_admin.NestedTabularInline):
     form = TextContentForm
 
     def has_delete_permission(self, request, obj=None):
-        return False
+        return True
 
 
 class ListRelatedContentInline(nested_admin.NestedTabularInline):
@@ -66,7 +66,7 @@ class ListRelatedContentInline(nested_admin.NestedTabularInline):
     inlines = [FieldContentInline]
 
     def has_delete_permission(self, request, obj=None):
-        return False
+        return True
 
 
 class TextContentInline(nested_admin.NestedTabularInline):
@@ -77,7 +77,7 @@ class TextContentInline(nested_admin.NestedTabularInline):
     ordering = ('position',)
 
     def has_delete_permission(self, request, obj=None):
-        return False
+        return True
 
 
 class ImageContentInline(nested_admin.NestedTabularInline):
@@ -89,7 +89,7 @@ class ImageContentInline(nested_admin.NestedTabularInline):
     ordering = ('position',)
 
     def has_delete_permission(self, request, obj=None):
-        return False
+        return True
 
 
 class HeaderContentInline(nested_admin.NestedTabularInline):
@@ -100,7 +100,7 @@ class HeaderContentInline(nested_admin.NestedTabularInline):
     ordering = ('position',)
 
     def has_delete_permission(self, request, obj=None):
-        return False
+        return True
 
 
 class ButtonContentInline(nested_admin.NestedTabularInline):
@@ -112,7 +112,7 @@ class ButtonContentInline(nested_admin.NestedTabularInline):
     ordering = ('position',)
 
     def has_delete_permission(self, request, obj=None):
-        return False
+        return True
 
 
 @admin.register(Page)

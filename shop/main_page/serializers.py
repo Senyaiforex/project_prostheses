@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from main_page.models import *
+import re
 
 
 class TextSerializer(serializers.ModelSerializer):
@@ -46,10 +47,25 @@ class PlaceHolderSerializer(serializers.ModelSerializer):
     """
     Сериалайзер для плейсхолдеров
     """
+    type = serializers.SerializerMethodField()
 
     class Meta:
         model = PlaceHolder
-        fields = ['text']
+        fields = ['text', 'type']
+
+    def get_type(self, obj):
+        # Регулярное выражение для проверки номера телефона
+        phone_regex = re.compile(r'^(?:\+7|8|9)\d{9,10}$')
+        list_text_tel = ['телефон', 'номер телефона', 'телефонный номер', 'номер',
+                         'телефон для связи', 'ваш телефон']
+        list_text_email = ['email', 'электронная почта', 'email адрес', 'электронный адрес']
+        email_regex = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
+        if obj.text and (phone_regex.match(obj.text) or obj.text.lower() in list_text_tel):
+            return 'tel'
+        elif obj.text and (obj.text.lower() in list_text_email or email_regex.match(obj.text)):
+            return 'email'
+        else:
+            return 'text'
 
 
 class FormSerializer(serializers.ModelSerializer):
