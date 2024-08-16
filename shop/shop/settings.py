@@ -24,11 +24,9 @@ SECRET_KEY = 'django-insecure-yp4s!%z0m1p2kj&5x1@00&6rsm1cf6ea=cd0n15#r0zt^gh9p@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['http://127.0.0.1:8000', '127.0.0.1']
-CORS_ALLOWED_ORIGINS = [
-        "http://localhost:8080",
-        "http://127.0.0.1:8000",
-]
+ALLOWED_HOSTS = ['*']
+CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOWED_ORIGINS = ["*"]
 # Application definition
 CORS_ALLOW_METHODS = (
         "DELETE",
@@ -134,7 +132,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
-
+CSRF_TRUSTED_ORIGINS = ['https://202f-188-68-160-86.ngrok-free.app']
 STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
