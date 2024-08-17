@@ -40,7 +40,7 @@ class AbstractSection(models.Model):
         abstract = True
 
     def __str__(self):
-        return self.title
+        return self.title if self.title else ' '
 
     def save(self, *args, **kwargs):
         if self.position is None:  # Заполняем поле только если оно пустое
@@ -76,7 +76,7 @@ class AbstractTextContent(models.Model):
         abstract = True
 
     def __str__(self):
-        return self.title
+        return self.title if self.title else ' '
 
 
 class AbstractButtonContent(models.Model):
@@ -103,7 +103,7 @@ class AbstractButtonContent(models.Model):
         abstract = True
 
     def __str__(self):
-        return self.title
+        return self.title if self.title else ' '
 
     def image_tag(self):
         if self.image:
@@ -131,7 +131,7 @@ class AbstractHeaderContent(models.Model):
         abstract = True
 
     def __str__(self):
-        return self.title
+        return self.title if self.title else ' '
 
 
 class AbstractImageContent(models.Model):
@@ -150,7 +150,7 @@ class AbstractImageContent(models.Model):
         abstract = True
 
     def __str__(self):
-        return self.title
+        return self.title if self.title else ' '
 
     def image_tag(self):
         if self.data:
@@ -174,4 +174,4 @@ class SpecialistModel(models.Model):
         verbose_name_plural = 'Специалисты'
 
     def __str__(self):
-        return self.full_name
+        return self.full_name if self.full_name else ' '
