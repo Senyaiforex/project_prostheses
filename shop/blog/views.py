@@ -15,7 +15,12 @@ class BlogView(APIView):
 class BlogDetailView(APIView):
     def get(self, request, slug, format=None):
         # Найти блог по slug
-        print(slug)
         blog = get_object_or_404(Blog, slug=slug)
         serializer = BlogSerializer(blog)
+        return Response(serializer.data)
+
+class TagView(APIView):
+    def get(self, request, format=None):
+        tags = Tag.objects.all()
+        serializer = TagSerializer(tags, many=True)
         return Response(serializer.data)
