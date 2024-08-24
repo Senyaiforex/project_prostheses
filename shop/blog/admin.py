@@ -2,6 +2,7 @@ import nested_admin
 from django.contrib import admin
 from .models import Tag, Blog
 
+
 @admin.register(Tag)
 class TagAdmin(nested_admin.NestedModelAdmin):
     list_display = ('name',)
@@ -9,6 +10,7 @@ class TagAdmin(nested_admin.NestedModelAdmin):
     class Meta:
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
+
 
 @admin.register(Blog)
 class BlogAdmin(nested_admin.NestedModelAdmin):
@@ -19,5 +21,5 @@ class BlogAdmin(nested_admin.NestedModelAdmin):
     readonly_fields = ['image_tag']
 
     class Meta:
-        verbose_name = 'Блог'
-        verbose_name_plural = 'Блоги'
+        verbose_name = 'Статья'
+        verbose_name_plural = 'Статьи'

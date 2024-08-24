@@ -23,10 +23,27 @@ SECRET_KEY = 'django-insecure-yp4s!%z0m1p2kj&5x1@00&6rsm1cf6ea=cd0n15#r0zt^gh9p@
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = ['*']
-CORS_ALLOW_ALL_ORIGINS = True
-# CORS_ALLOWED_ORIGINS = ["*"]
+if DEBUG:
+    ALLOWED_HOSTS = ['*']
+    CORS_ALLOW_ALL_ORIGINS = True
+else:
+    ALLOWED_HOSTS = ['moreprotezov.ru', 'localhost', '0.0.0.0', '127.0.0.1', '95.163.228.162']
+    CSRF_TRUSTED_ORIGINS = ['https://moreprotezov.ru',
+                            'http://moreprotezov.ru',
+                            'https://0.0.0.0',
+                            'http://0.0.0.0',
+                            'https://127.0.0.1',
+                            'http://127.0.0.1',
+                            'http://95.163.228.162',
+                            'https://95.163.228.162']
+    CORS_ALLOWED_ORIGINS = ['https://moreprotezov.ru',
+                            'http://moreprotezov.ru',
+                            'https://0.0.0.0',
+                            'http://0.0.0.0',
+                            'https://127.0.0.1',
+                            'http://127.0.0.1',
+                            'http://95.163.228.162',
+                            'https://95.163.228.162']
 # Application definition
 CORS_ALLOW_METHODS = (
         "DELETE",
@@ -132,10 +149,18 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
-CSRF_TRUSTED_ORIGINS = ['https://202f-188-68-160-86.ngrok-free.app']
-STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATIC_URL = '/static/'
+if DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'production_static')
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    DEFAULT_DOMAIN = "http://127.0.0.1:8000/"
+else:
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'production_static')]
+    STATIC_ROOT = "/var/www/html/static"
+    MEDIA_ROOT = "/var/www/html/media"
+    DEFAULT_DOMAIN = "https://moreprotezov.ru/"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
