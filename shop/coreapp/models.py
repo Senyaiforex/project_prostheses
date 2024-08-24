@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.html import mark_safe
 from ordered_model.models import OrderedModel
+from django.core.validators import FileExtensionValidator
+import requests
 
 
 # Create your models here.
@@ -170,8 +172,98 @@ class SpecialistModel(models.Model):
     bio = models.TextField(verbose_name='Биография')
 
     class Meta:
-        verbose_name = 'Специалист'
+        verbose_name = 'специалиста'
         verbose_name_plural = 'Специалисты'
 
     def __str__(self):
         return self.full_name if self.full_name else ' '
+
+    def image_tag(self):
+        if self.photo:
+            return mark_safe(f'<img src="{self.image.url}" width="90" height="90" />')
+        return "Отсутствует"
+
+    image_tag.short_description = 'Фото'
+
+
+class CategoryModel(models.Model):
+    """
+    Модель для категорий видео
+    """
+    title = models.CharField(verbose_name='Название категории', max_length=50)
+    dec_tag = models.CharField(verbose_name='Декларированный тег', max_length=20)
+
+    def __str__(self):
+        return self.title if self.title else ' '
+
+    class Meta:
+        verbose_name = 'категорию'
+        verbose_name_plural = 'Категории видео'
+
+
+class VideoModel(models.Model):
+    """
+    Модель для видео сайта
+    """
+    PAGES = [
+            ('hip', 'Протез бедра'),
+            ('leg', 'Протез голени'),
+            ('arm', 'Протез руки'),
+            ('sport', 'Протез спортивный'),
+            ('swim', 'Протез купальный'),
+            ('main', 'Главная'),
+            ('about', 'О компании'),
+            ('interview', 'Интервью с клиентами'),
+    ]
+    page = models.CharField(
+            max_length=30,
+            choices=PAGES,
+            verbose_name='Страница',
+            null=True,
+            blank=True)
+    title = models.CharField(verbose_name='Название видео', max_length=100)
+    description = models.TextField(verbose_name='Описание видео')
+    video = models.FileField(upload_to='videos/',
+                             verbose_name='Видеофайл',
+                             validators=[FileExtensionValidator(
+                                     allowed_extensions=['mp4', 'avi', 'webm', 'mov', 'html5', 'webm'],
+                                     message='Допустимые форматы: mp4, avi, webm, mov, html5, webm')])
+    picture = models.ImageField(upload_to='video_images/', verbose_name='Превью видео')
+    tag_dev = models.CharField(verbose_name='Тег для разработки', max_length=20)
+    category = models.ForeignKey(CategoryModel, on_delete=models.CASCADE, verbose_name='Категория видео')
+
+    def __str__(self):
+        return self.title if self.title else ' '
+
+    def save(self, *args, **kwargs):
+        try:
+            old_picture = None
+            old_video = None
+            video = VideoModel.objects.filter(id=self.id).first()
+            if all((video, video.video, video.video != self.video)):
+                old_video = video.video
+            if all((video, video.picture, video.picture != self.picture)):
+                old_picture = video.picture
+        except Exception as ex:
+            pass
+        super(VideoModel, self).save(*args, **kwargs)
+        if old_video:
+            old_video.delete(save=False)
+        if old_picture:
+            old_picture.delete(save=False)
+
+    def video_tag(self):
+        if self.video:
+            poster_url = self.picture.url if self.picture else ""
+            return mark_safe(
+                    f'<video width="320" height="240" controls poster="{poster_url}">'
+                    f'<source src="{self.video.url}" type="video/mp4">'
+                    f''
+                    f'</video>')
+        return "Отсутствует"
+
+    video_tag.short_description = 'Видео'
+
+    class Meta:
+        verbose_name = 'видео'
+        verbose_name_plural = 'Видео'

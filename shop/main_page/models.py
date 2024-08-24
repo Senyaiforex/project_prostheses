@@ -47,6 +47,17 @@ class ButtonContent(AbstractButtonContent, SectionMixin):
     """
     Модель для кнопок в пределах одной секции
     """
+    def save(self, *args, **kwargs):
+        try:
+            old_image = None
+            button = ButtonContent.objects.filter(id=self.id).first()
+            if all((button.image, button.image, button.image != self.image)):
+                old_image = button.image
+        except Exception as ex:
+            pass
+        super(ButtonContent, self).save(*args, **kwargs)
+        if old_image:  # Удалить старое изображение
+            old_image.delete(save=False)
 
 
 class HeaderContent(AbstractHeaderContent, SectionMixin):
@@ -59,7 +70,17 @@ class ImageContent(AbstractImageContent, SectionMixin):
     """
     Модель для картинок в пределах одной секции
     """
-
+    def save(self, *args, **kwargs):
+        try:
+            old_image = None
+            image = ImageContent.objects.filter(id=self.id).first()
+            if all((image, image.data, image.data != self.data)):
+                old_image = image.data
+        except Exception as ex:
+            pass
+        super(ImageContent, self).save(*args, **kwargs)
+        if old_image:  # Удалить старое изображение
+            old_image.delete(save=False)
 
 class ListRelatedContent(SectionMixin):
     """
@@ -73,7 +94,7 @@ class ListRelatedContent(SectionMixin):
         verbose_name_plural = 'Связанные списки'
 
     def __str__(self):
-        return self.description[:30]
+        return self.description[:30] if self.description else ' '
 
 
 class FieldContent(models.Model):
@@ -102,7 +123,16 @@ class FieldContent(models.Model):
             self.position = self._generate_fgr_value()
         else:
             pass
+        try:
+            old_image = None
+            field = FieldContent.objects.filter(id=self.id).first()
+            if all((field, field.image, field.image != self.image)):
+                old_image = field.image
+        except Exception as ex:
+            pass
         super().save(*args, **kwargs)
+        if old_image:  # Удалить старое изображение
+            old_image.delete(save=False)
 
     #
     #
@@ -132,7 +162,7 @@ class FormContent(SectionMixin):
         verbose_name_plural = 'Формы'
 
     def __str__(self):
-        return self.title
+        return self.title if self.title else ' '
 
 
 class PlaceHolder(models.Model):
@@ -145,7 +175,7 @@ class PlaceHolder(models.Model):
                              )
 
     def __str__(self):
-        return self.text
+        return self.text if self.text else ' '
 
     def save(self, *args, **kwargs):
         if self.position is None:  # Заполняем поле только если оно пустое
