@@ -10,6 +10,4 @@ class SpecialistListView(generics.ListAPIView):
 
 class VideoListView(generics.ListAPIView):
     serializer_class = VideoSerializer
-    def get_queryset(self):
-        page_name = self.kwargs.get('page_name')
-        return VideoModel.objects.filter(page=page_name)
+    queryset = VideoModel.objects.all()

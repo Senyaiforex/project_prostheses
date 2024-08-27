@@ -19,6 +19,6 @@ class VideoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = VideoModel
-        fields = ('page', 'title',
+        fields = ('title',
                   'description', 'category',
                   'video', 'preview', 'tag_dev')

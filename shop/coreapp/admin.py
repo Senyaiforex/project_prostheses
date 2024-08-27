@@ -7,6 +7,7 @@ from .models import SpecialistModel, VideoModel, CategoryModel
 class TagAdmin(nested_admin.NestedModelAdmin):
     fields = ['full_name', 'job_title', 'bio', 'photo', 'image_tag']
     readonly_fields = ['image_tag']
+
     class Meta:
         verbose_name = 'Специалист'
         verbose_name_plural = 'Специалисты'
@@ -25,8 +26,8 @@ class CategoryAdmin(nested_admin.NestedModelAdmin):
 class VideoAdmin(nested_admin.NestedModelAdmin):
     list_display = ('title',)
     search_fields = ('title', 'description')
-    list_filter = ('category__title', 'page')
-    fields = ['title', 'description', 'category', 'page', 'video', 'preview', 'tag_dev', 'video_tag']
+    list_filter = ('category__title',)
+    fields = ['title', 'description', 'category', 'video', 'preview', 'tag_dev', 'video_tag']
     readonly_fields = ['video_tag']
 
     class Meta:
