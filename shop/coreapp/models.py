@@ -228,7 +228,7 @@ class VideoModel(models.Model):
                              validators=[FileExtensionValidator(
                                      allowed_extensions=['mp4', 'avi', 'webm', 'mov', 'html5', 'webm'],
                                      message='Допустимые форматы: mp4, avi, webm, mov, html5, webm')])
-    picture = models.ImageField(upload_to='video_images/', verbose_name='Превью видео')
+    preview = models.ImageField(upload_to='video_images/', verbose_name='Превью видео')
     tag_dev = models.CharField(verbose_name='Тег для разработки', max_length=20)
     category = models.ForeignKey(CategoryModel, on_delete=models.CASCADE, verbose_name='Категория видео')
 
@@ -254,7 +254,7 @@ class VideoModel(models.Model):
 
     def video_tag(self):
         if self.video:
-            poster_url = self.picture.url if self.picture else ""
+            poster_url = self.preview.url if self.preview else ""
             return mark_safe(
                     f'<video width="320" height="240" controls poster="{poster_url}">'
                     f'<source src="{self.video.url}" type="video/mp4">'
