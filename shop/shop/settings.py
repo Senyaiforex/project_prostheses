@@ -27,7 +27,7 @@ if DEBUG:
     ALLOWED_HOSTS = ['*']
     CORS_ALLOW_ALL_ORIGINS = True
 else:
-    ALLOWED_HOSTS = ['moreprotezov.ru', 'localhost', '0.0.0.0', '127.0.0.1', '95.163.228.162']
+    ALLOWED_HOSTS = ['moreprotezov.ru', 'localhost', '0.0.0.0', '127.0.0.1', '95.163.228.162', 'http://localhost:3000 ']
     CSRF_TRUSTED_ORIGINS = ['https://moreprotezov.ru',
                             'http://moreprotezov.ru',
                             'https://0.0.0.0',
@@ -35,7 +35,7 @@ else:
                             'https://127.0.0.1',
                             'http://127.0.0.1',
                             'http://95.163.228.162',
-                            'https://95.163.228.162']
+                            'https://95.163.228.162',]
     CORS_ALLOWED_ORIGINS = ['https://moreprotezov.ru',
                             'http://moreprotezov.ru',
                             'https://0.0.0.0',
@@ -160,7 +160,7 @@ else:
     STATIC_ROOT = "/var/www/html/static"
     MEDIA_ROOT = "/var/www/html/media"
     DEFAULT_DOMAIN = "https://moreprotezov.ru/"
-
+URL_NOTIFICATION = 'http://localhost:3000/next-api/revalidate'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 

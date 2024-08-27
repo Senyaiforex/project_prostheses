@@ -3,9 +3,20 @@ from django.utils.html import mark_safe
 from ordered_model.models import OrderedModel
 from django.core.validators import FileExtensionValidator
 import requests
-
+import json
+from django.conf import settings
 
 # Create your models here.
+url_notification = settings.URL_NOTIFICATION
+
+
+def send_notification():
+    try:
+        msg = {'revalidate': True}
+        requests.post(url_notification, data=json.dumps(msg))
+    except requests.exceptions.RequestException as e:
+        pass
+
 
 class AbstractSection(models.Model):
     """
@@ -49,6 +60,7 @@ class AbstractSection(models.Model):
             self.position = self._generate_fgr_value()
         else:
             pass
+        send_notification()
         super().save(*args, **kwargs)
 
     #
@@ -175,6 +187,10 @@ class SpecialistModel(models.Model):
         verbose_name = 'специалиста'
         verbose_name_plural = 'Специалисты'
 
+    def save(self, *args, **kwargs):
+        send_notification()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.full_name if self.full_name else ' '
 
@@ -196,6 +212,10 @@ class CategoryModel(models.Model):
     def __str__(self):
         return self.title if self.title else ' '
 
+    def save(self, *args, **kwargs):
+        send_notification()
+        super(CategoryModel, self).save(*args, **kwargs)
+
     class Meta:
         verbose_name = 'категорию'
         verbose_name_plural = 'Категории видео'
@@ -215,12 +235,6 @@ class VideoModel(models.Model):
             ('about', 'О компании'),
             ('interview', 'Интервью с клиентами'),
     ]
-    page = models.CharField(
-            max_length=30,
-            choices=PAGES,
-            verbose_name='Страница',
-            null=True,
-            blank=True)
     title = models.CharField(verbose_name='Название видео', max_length=100)
     description = models.TextField(verbose_name='Описание видео')
     video = models.FileField(upload_to='videos/',
@@ -247,6 +261,7 @@ class VideoModel(models.Model):
         except Exception as ex:
             pass
         super(VideoModel, self).save(*args, **kwargs)
+        send_notification()
         if old_video:
             old_video.delete(save=False)
         if old_picture:

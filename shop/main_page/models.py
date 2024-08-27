@@ -1,6 +1,19 @@
 from coreapp.models import *
 from django.db import models
 from ordered_model.models import OrderedModel
+import requests
+import json
+from django.conf import settings
+
+url_notification = settings.URL_NOTIFICATION
+
+
+def send_notification():
+    try:
+        msg = {'revalidate': True}
+        requests.post(url_notification, data=json.dumps(msg))
+    except requests.exceptions.RequestException as e:
+        pass
 
 
 class Section(AbstractSection):
@@ -22,6 +35,7 @@ class SectionMixin(models.Model):
             self.position = self._generate_fgr_value()
         else:
             pass
+        send_notification()
         super().save(*args, **kwargs)
 
     #
@@ -47,6 +61,7 @@ class ButtonContent(AbstractButtonContent, SectionMixin):
     """
     Модель для кнопок в пределах одной секции
     """
+
     def save(self, *args, **kwargs):
         try:
             old_image = None
@@ -70,6 +85,7 @@ class ImageContent(AbstractImageContent, SectionMixin):
     """
     Модель для картинок в пределах одной секции
     """
+
     def save(self, *args, **kwargs):
         try:
             old_image = None
@@ -81,6 +97,7 @@ class ImageContent(AbstractImageContent, SectionMixin):
         super(ImageContent, self).save(*args, **kwargs)
         if old_image:  # Удалить старое изображение
             old_image.delete(save=False)
+
 
 class ListRelatedContent(SectionMixin):
     """
@@ -131,6 +148,7 @@ class FieldContent(models.Model):
         except Exception as ex:
             pass
         super().save(*args, **kwargs)
+        send_notification()
         if old_image:  # Удалить старое изображение
             old_image.delete(save=False)
 
@@ -182,6 +200,7 @@ class PlaceHolder(models.Model):
             self.position = self._generate_fgr_value()
         else:
             pass
+        send_notification()
         super().save(*args, **kwargs)
 
     #
