@@ -4,6 +4,7 @@ from django.utils.text import slugify
 from transliterate import translit
 from django_ckeditor_5.fields import CKEditor5Field
 
+
 class Tag(models.Model):
     """
     Класс-модель для тегов
@@ -25,7 +26,8 @@ class Blog(models.Model):
     """
     title = models.CharField(verbose_name='Название статьи', max_length=200, unique=True, blank=False)
     sub_title = models.TextField(verbose_name='Краткое описание статьи')
-    content = CKEditor5Field(verbose_name='Содержание статьи', blank=True, null=True, default=' ', config_name='extends')
+    content = CKEditor5Field(verbose_name='Содержание статьи', blank=True, null=True, default=' ',
+                             config_name='extends')
     image = models.ImageField(upload_to='blog_images/', blank=True, verbose_name='Изображение')
     tag = models.ForeignKey(Tag, on_delete=models.DO_NOTHING,
                             related_name='blogs',
@@ -34,6 +36,7 @@ class Blog(models.Model):
                             null=True)
     slug = models.SlugField(null=False, default='slug', max_length=255,
                             db_index=True, verbose_name='Слаг', blank=True)
+
     def __str__(self):
         return self.title if self.title else ' '
 
@@ -61,4 +64,8 @@ class Blog(models.Model):
         if old_image:  # Удалить старое изображение
             old_image.delete(save=False)
 
+    def delete(self, *args, **kwargs):
+        image = self.image
+        super(Blog, self).delete(*args, **kwargs)
+        image.delete(save=False)
     image_tag.short_description = 'Изображение'

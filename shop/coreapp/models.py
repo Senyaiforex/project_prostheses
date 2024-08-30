@@ -7,6 +7,7 @@ import json
 from django.conf import settings
 from django.utils.text import slugify
 from transliterate import translit
+
 # Create your models here.
 url_notification = settings.URL_NOTIFICATION
 
@@ -271,6 +272,13 @@ class VideoModel(models.Model):
             old_video.delete(save=False)
         if old_picture:
             old_picture.delete(save=False)
+
+    def delete(self, *args, **kwargs):
+        preview = self.preview
+        video = self.video
+        super(VideoModel, self).delete(*args, **kwargs)
+        preview.delete(save=False)
+        video.delete(save=False)
 
     def video_tag(self):
         if self.video:
