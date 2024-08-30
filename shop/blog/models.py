@@ -23,7 +23,7 @@ class Blog(models.Model):
     """
     Класс-модель для блогов
     """
-    title = models.CharField(verbose_name='Название статьи', max_length=200)
+    title = models.CharField(verbose_name='Название статьи', max_length=200, unique=True, blank=False)
     sub_title = models.TextField(verbose_name='Краткое описание статьи')
     content = CKEditor5Field(verbose_name='Содержание статьи', blank=True, null=True, default=' ', config_name='extends')
     image = models.ImageField(upload_to='blog_images/', blank=True, verbose_name='Изображение')
@@ -32,7 +32,8 @@ class Blog(models.Model):
                             verbose_name='Тег',
                             blank=True,
                             null=True)
-    slug = models.SlugField(null=True, max_length=255, db_index=True, verbose_name='Слаг', blank=True)
+    slug = models.SlugField(null=False, default='slug', max_length=255,
+                            db_index=True, verbose_name='Слаг', blank=True)
     def __str__(self):
         return self.title if self.title else ' '
 

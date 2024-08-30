@@ -16,9 +16,13 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class VideoSerializer(serializers.ModelSerializer):
     category = CategorySerializer()
+    url = serializers.SerializerMethodField()
 
     class Meta:
         model = VideoModel
         fields = ('title',
                   'description', 'category',
-                  'video', 'preview', 'tag_dev')
+                  'video', 'preview', 'url')
+
+    def get_url(self, obj):
+        return obj.slug

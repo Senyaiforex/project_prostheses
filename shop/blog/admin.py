@@ -35,8 +35,8 @@ class BlogAdmin(nested_admin.NestedModelAdmin):
     list_display = ('title', 'sub_title', 'tag')
     search_fields = ('title', 'sub_title', 'content')
     list_filter = ('tag',)
-    fields = ['title', 'sub_title', 'content', 'tag', 'image', 'image_tag']
-    readonly_fields = ['image_tag']
+    fields = ['title', 'sub_title', 'content', 'tag', 'slug', 'image', 'image_tag']
+    readonly_fields = ['image_tag', 'slug']
 
     class Meta:
         verbose_name = 'Статья'

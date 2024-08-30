@@ -5,7 +5,8 @@ from django.core.validators import FileExtensionValidator
 import requests
 import json
 from django.conf import settings
-
+from django.utils.text import slugify
+from transliterate import translit
 # Create your models here.
 url_notification = settings.URL_NOTIFICATION
 
@@ -235,7 +236,7 @@ class VideoModel(models.Model):
             ('about', 'О компании'),
             ('interview', 'Интервью с клиентами'),
     ]
-    title = models.CharField(verbose_name='Название видео', max_length=100)
+    title = models.CharField(verbose_name='Название видео', max_length=100, blank=False, unique=True)
     description = models.TextField(verbose_name='Описание видео')
     video = models.FileField(upload_to='videos/',
                              verbose_name='Видеофайл',
@@ -243,13 +244,17 @@ class VideoModel(models.Model):
                                      allowed_extensions=['mp4', 'avi', 'webm', 'mov', 'html5', 'webm'],
                                      message='Допустимые форматы: mp4, avi, webm, mov, html5, webm')])
     preview = models.ImageField(upload_to='video_images/', verbose_name='Превью видео')
-    tag_dev = models.CharField(verbose_name='Тег для разработки', max_length=20)
+    slug = models.SlugField(max_length=255, db_index=True, verbose_name='Слаг', default='slug',
+                            blank=True, unique=True)
     category = models.ForeignKey(CategoryModel, on_delete=models.CASCADE, verbose_name='Категория видео')
 
     def __str__(self):
         return self.title if self.title else ' '
 
     def save(self, *args, **kwargs):
+        transliterated_title = translit(self.title, 'ru', reversed=True)
+        generated_slug = slugify(transliterated_title, allow_unicode=True)
+        self.slug = generated_slug
         try:
             old_picture = None
             old_video = None

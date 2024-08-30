@@ -4,5 +4,6 @@ from .views import *
 app_name = 'core'
 urlpatterns = [
     path('specialists/', SpecialistListView.as_view(), name='specialists'),
-    path('videos/', VideoListView.as_view(), name='videos'),
+    path('videos/all/', VideoListView.as_view(), name='list-videos'),
+    path('videos/<slug:slug>/', VideoDetailView.as_view(), name='video-detail'),
 ]

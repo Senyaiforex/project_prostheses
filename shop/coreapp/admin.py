@@ -27,8 +27,8 @@ class VideoAdmin(nested_admin.NestedModelAdmin):
     list_display = ('title',)
     search_fields = ('title', 'description')
     list_filter = ('category__title',)
-    fields = ['title', 'description', 'category', 'video', 'preview', 'tag_dev', 'video_tag']
-    readonly_fields = ['video_tag']
+    fields = ['title', 'description', 'category', 'video', 'preview', 'slug', 'video_tag']
+    readonly_fields = ['video_tag', 'slug']
 
     class Meta:
         verbose_name = 'Видео'
