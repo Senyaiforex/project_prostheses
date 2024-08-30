@@ -5,8 +5,10 @@ certifi==2024.7.4
 charset-normalizer==3.3.2
 defusedxml==0.7.1
 Django==5.0.7
+django-ckeditor-5==0.2.13
 django-cors-headers==4.4.0
 django-filter==24.2
+django-js-asset==2.2.0
 django-modelcluster==6.3
 django-nested-admin==4.1.0
 django-ordered-model==3.7.4
