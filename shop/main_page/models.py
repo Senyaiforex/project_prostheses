@@ -1,12 +1,9 @@
 from coreapp.models import *
 from django.db import models
-from ordered_model.models import OrderedModel
 import requests
 import json
 from django.conf import settings
-
 url_notification = settings.URL_NOTIFICATION
-
 
 def send_notification():
     try:
@@ -120,8 +117,8 @@ class FieldContent(models.Model):
                                      verbose_name='Связанный список',
                                      related_name='fields'
                                      )
-    field_1 = models.CharField(verbose_name='поле 1', max_length=500, blank=True, null=True)
-    field_2 = models.TextField(verbose_name='поле 2', max_length=500, blank=True, null=True)
+    field_1 = models.CharField(verbose_name='поле 1', max_length=2000, blank=True, null=True)
+    field_2 = models.TextField(verbose_name='поле 2', max_length=2000, blank=True, null=True)
     field_3 = models.TextField(verbose_name='поле 3', max_length=5000, blank=True, null=True)
     position = models.IntegerField(editable=True, blank=True, null=True)
     image = models.ImageField(upload_to='relationlist_images/', verbose_name='Изображение',

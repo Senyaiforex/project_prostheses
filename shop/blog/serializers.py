@@ -24,3 +24,12 @@ class BlogSerializer(serializers.ModelSerializer):
         # request = self.context.get('request')
         # domain = request.build_absolute_uri('/') if request else settings.DEFAULT_DOMAIN
         return obj.slug
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        # Если множество объектов сериализуется, просто удалите поле 'text_rich'
+        if self.context['many']:  # or some other logic to determine many=True
+            representation.pop('content', None)
+
+        return representation

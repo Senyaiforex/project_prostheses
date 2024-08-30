@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.html import mark_safe
 from django.utils.text import slugify
 from transliterate import translit
-
+from django_ckeditor_5.fields import CKEditor5Field
 
 class Tag(models.Model):
     """
@@ -25,7 +25,7 @@ class Blog(models.Model):
     """
     title = models.CharField(verbose_name='Название статьи', max_length=200)
     sub_title = models.TextField(verbose_name='Краткое описание статьи')
-    content = models.TextField(verbose_name='Содержание статьи')
+    content = CKEditor5Field(verbose_name='Содержание статьи', blank=True, null=True, default=' ', config_name='extends')
     image = models.ImageField(upload_to='blog_images/', blank=True, verbose_name='Изображение')
     tag = models.ForeignKey(Tag, on_delete=models.DO_NOTHING,
                             related_name='blogs',
@@ -33,7 +33,6 @@ class Blog(models.Model):
                             blank=True,
                             null=True)
     slug = models.SlugField(null=True, max_length=255, db_index=True, verbose_name='Слаг', blank=True)
-
     def __str__(self):
         return self.title if self.title else ' '
 

@@ -2,6 +2,24 @@ import nested_admin
 from django.contrib import admin
 from .models import Tag, Blog
 
+from django import forms
+
+from django_ckeditor_5.widgets import CKEditor5Widget
+from .models import Blog
+
+
+class CommentForm(forms.ModelForm):
+    """Form for comments to the article."""
+
+    class Meta:
+        model = Blog
+        fields = '__all__'
+        widgets = {
+                "text": CKEditor5Widget(
+                        attrs={"class": "django_ckeditor_5"}, config_name="extends"
+                )
+        }
+
 
 @admin.register(Tag)
 class TagAdmin(nested_admin.NestedModelAdmin):

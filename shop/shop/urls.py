@@ -23,7 +23,8 @@ urlpatterns = [
         path('admin/', admin.site.urls),
         path('api/pages/', include('main_page.urls')),
         path('api/blogs/', include('blog.urls')),
-        path('api/', include('coreapp.urls'))
+        path('api/', include('coreapp.urls')),
+        path("ckeditor5/", include('django_ckeditor_5.urls')),
 ]
 
 if settings.DEBUG:
