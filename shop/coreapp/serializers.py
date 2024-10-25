@@ -14,6 +14,16 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ('title', 'dec_tag')
 
 
+class VideoTagSerializer(serializers.ModelSerializer):
+    title = serializers.CharField()
+    tag = serializers.CharField(source='dec_tag')
+
+    class Meta:
+        model = CategoryModel
+        fields = ['title', 'tag']
+
+
+
 class VideoSerializer(serializers.ModelSerializer):
     category = CategorySerializer()
     url = serializers.SerializerMethodField()

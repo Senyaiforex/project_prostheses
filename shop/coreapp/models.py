@@ -1,5 +1,9 @@
+import os
+
+from django.core.files.base import ContentFile
 from django.db import models
 from django.utils.html import mark_safe
+from moviepy.video.io.VideoFileClip import VideoFileClip
 from ordered_model.models import OrderedModel
 from django.core.validators import FileExtensionValidator
 import requests
@@ -184,7 +188,7 @@ class SpecialistModel(models.Model):
     photo = models.ImageField(upload_to='specialists/', verbose_name='Фотография')
     job_title = models.CharField(verbose_name='Должность', max_length=100)
     bio = models.TextField(verbose_name='Биография')
-
+    hidden = models.BooleanField(default=False, verbose_name='Скрытый')
     class Meta:
         verbose_name = 'специалиста'
         verbose_name_plural = 'Специалисты'
@@ -244,9 +248,10 @@ class VideoModel(models.Model):
                              validators=[FileExtensionValidator(
                                      allowed_extensions=['mp4', 'avi', 'webm', 'mov', 'html5', 'webm'],
                                      message='Допустимые форматы: mp4, avi, webm, mov, html5, webm')])
-    preview = models.ImageField(upload_to='video_images/', verbose_name='Превью видео')
-    slug = models.SlugField(max_length=255, db_index=True, verbose_name='Слаг', default='slug',
-                            blank=True, unique=True)
+    preview = models.ImageField(upload_to='video_images/', verbose_name='Превью видео',
+                                blank=True, null=True)
+    slug = models.SlugField(max_length=255, db_index=True, verbose_name='url-адрес видео',
+                            blank=False, unique=True)
     category = models.ForeignKey(CategoryModel, on_delete=models.CASCADE, verbose_name='Категория видео')
 
     def __str__(self):
@@ -262,8 +267,24 @@ class VideoModel(models.Model):
             video = VideoModel.objects.filter(id=self.id).first()
             if all((video, video.video, video.video != self.video)):
                 old_video = video.video
-            if all((video, video.picture, video.picture != self.picture)):
-                old_picture = video.picture
+            if all((video, video.preview, video.preview != self.preview)):
+                old_picture = video.preview
+            else:
+                if not self.preview and self.video:
+                    try:
+                        # Определяем временной путь для сохранения превью
+                        video_clip = VideoFileClip(self.video.path)
+                        preview_filename = f'{self.id}_preview.jpg'
+                        preview_path = os.path.join('video_images/', preview_filename)
+                        video_clip.save_frame(preview_path, t=1)
+                        video_clip.close()
+                        with open(preview_path, 'rb') as f:
+                            content = ContentFile(f.read(), name=preview_filename)
+                            self.preview.save(preview_filename, content, save=False)
+                        if os.path.exists(preview_path):
+                            os.remove(preview_path)
+                    except Exception as e:
+                        pass
         except Exception as ex:
             pass
         super(VideoModel, self).save(*args, **kwargs)

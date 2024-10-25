@@ -34,8 +34,8 @@ class Blog(models.Model):
                             verbose_name='Тег',
                             blank=True,
                             null=True)
-    slug = models.SlugField(null=False, default='slug', max_length=255,
-                            db_index=True, verbose_name='Слаг', blank=True)
+    slug = models.SlugField(max_length=255,
+                            db_index=True, verbose_name='url-адрес статьи', blank=False)
 
     def __str__(self):
         return self.title if self.title else ' '

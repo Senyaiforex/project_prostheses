@@ -3,12 +3,12 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import SpecialistModel, VideoModel
-from .serializers import SpecialistSerializer, VideoSerializer
+from .models import SpecialistModel, VideoModel, CategoryModel
+from .serializers import SpecialistSerializer, VideoSerializer, VideoTagSerializer
 
 
 class SpecialistListView(generics.ListAPIView):
-    queryset = SpecialistModel.objects.all()
+    queryset = SpecialistModel.objects.filter(hidden=False)
     serializer_class = SpecialistSerializer
 
 
@@ -20,4 +20,10 @@ class VideoDetailView(APIView):
     def get(self, request, slug, format=None):
         video = get_object_or_404(VideoModel, slug=slug)
         serializer = VideoSerializer(video)
+        return Response(serializer.data)
+
+class VideoTagView(APIView):
+    def get(self, request, format=None):
+        tags = CategoryModel.objects.all()
+        serializer = VideoTagSerializer(tags, many=True)
         return Response(serializer.data)
