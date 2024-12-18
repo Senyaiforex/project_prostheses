@@ -253,6 +253,8 @@ class VideoModel(models.Model):
     slug = models.SlugField(max_length=255, db_index=True, verbose_name='url-адрес видео',
                             blank=False, unique=True)
     category = models.ForeignKey(CategoryModel, on_delete=models.CASCADE, verbose_name='Категория видео')
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.title if self.title else ' '

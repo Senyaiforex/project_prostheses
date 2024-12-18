@@ -1,8 +1,22 @@
+import json
+
 from django.db import models
 from django.utils.html import mark_safe
 from django.utils.text import slugify
 from transliterate import translit
 from django_ckeditor_5.fields import CKEditor5Field
+import requests
+from django.conf import settings
+
+url_notification = settings.URL_NOTIFICATION
+
+
+def send_notification():
+    try:
+        msg = {'revalidate': True}
+        requests.post(url_notification, data=json.dumps(msg))
+    except requests.exceptions.RequestException as e:
+        pass
 
 
 class Tag(models.Model):
@@ -63,9 +77,12 @@ class Blog(models.Model):
         super(Blog, self).save(*args, **kwargs)
         if old_image:  # Удалить старое изображение
             old_image.delete(save=False)
+        send_notification()
 
     def delete(self, *args, **kwargs):
         image = self.image
         super(Blog, self).delete(*args, **kwargs)
         image.delete(save=False)
+        send_notification()
+
     image_tag.short_description = 'Изображение'

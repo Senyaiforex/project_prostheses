@@ -14,7 +14,7 @@ class SpecialistListView(generics.ListAPIView):
 
 class VideoListView(generics.ListAPIView):
     serializer_class = VideoSerializer
-    queryset = VideoModel.objects.all()
+    queryset = VideoModel.objects.all().order_by('created_at', 'updated_at')
 
 class VideoDetailView(APIView):
     def get(self, request, slug, format=None):
